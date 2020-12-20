@@ -122,7 +122,7 @@ Stock.searchByQueryParams = (searchParams, result) => {
     
   if (strSQL) {
 
-    console.log('strSQL: ', strSQL)
+    //console.log('strSQL: ', strSQL)
     sql.query(strSQL, (err, res) => {
       if (err) {
         console.log("error: ", err);
@@ -131,7 +131,7 @@ Stock.searchByQueryParams = (searchParams, result) => {
       }
 
       if (res.length) {
-        console.log("found terms: ", res);
+        //console.log("found terms: ", res);
         result(null, res);
         return;
       }

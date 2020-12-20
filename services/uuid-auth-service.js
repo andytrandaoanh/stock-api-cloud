@@ -4,6 +4,8 @@ const uuidKey = process.env.UUIDKEY;
 function verifyAccess(req, res, next) {
 
   const userAPIKey = req.headers['x-api-key'];
+
+
   if (!userAPIKey) 
     return res.status(403).send({ auth: false, message: 'No API key provided.' });
   

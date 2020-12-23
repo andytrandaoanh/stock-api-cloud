@@ -254,3 +254,39 @@ exports.createNewTransaction = (req, res) => {
   
   
   
+  // Search for index transactions by ticker and midate
+exports.getLimitTransactions = (req, res) => {  
+  
+  transactions.getLimitTransactions(req.query, (err, data) => {
+  if (err) { 
+
+    if (err.kind === "not_found") {
+      res.status(404).send({
+          message: `Not found transactions with params`,
+      });
+    }
+
+    else if (err.kind === "invalid_param") { 
+
+        res.status(500).send({
+          message: `Params supplied are invalid`,
+        });
+    }
+
+    else {
+
+        res.status(500).send({
+          message: "Error retrieving transaction params",
+        });
+
+    }  
+
+
+  }
+
+  else res.send(data);
+
+  });
+  
+};
+

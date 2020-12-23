@@ -11,6 +11,9 @@ router.get("/indexes/value", authService,  transactions.getValueList);
 router.get("/indexes/volume", authService,  transactions.getVolumeList);
 
 //add a new index transaction
+router.get("/indexes", authService,  transactions.getLimitTransactions);
+
+//add a new index transaction
 router.post("/indexes", authService,  transactions.createNewTransaction);
 
 module.exports = router;

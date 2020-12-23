@@ -330,3 +330,30 @@ exports.getTickerList = (callback) =>{
 };
 
 
+
+
+exports.getLimitTransactions = (query, callback) =>{
+  
+  let strSQL = '';
+  let limit = '15';
+
+  if ('limit' in query)  limit = query['limit'];
+
+
+  strSQL = `select * from index_trans order by dateseq desc limit ${limit}`;
+  //console.log('strSQL:', strSQL)
+  sqlConnection.query(strSQL, (error, result) => {
+    if (error) {          
+      callback(error, null);
+      return;
+    }
+
+    if (result.length) {
+      //console.log("dates: ", res);
+         callback(null, result);
+      return;
+    }
+})    
+
+};
+

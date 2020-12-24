@@ -16,4 +16,11 @@ router.get("/indexes", authService,  transactions.getLimitTransactions);
 //add a new index transaction
 router.post("/indexes", authService,  transactions.createNewTransaction);
 
+//modify existing index transaction
+router.put("/indexes/:id", authService,  transactions.updateTransaction);
+
+//Delete a transaction on id
+router.delete("/indexes/:id", authService,  transactions.deleteTransaction);
+
+
 module.exports = router;

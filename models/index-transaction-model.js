@@ -357,3 +357,50 @@ exports.getLimitTransactions = (query, callback) =>{
 
 };
 
+
+exports.updateById = (id, transaction, result) => {
+  //console.log('req.body', transaction);
+  const {ticker, dateseq, open_px, close_px, high_px, low_px, volume} = transaction;
+  sqlConnection.query(
+    `UPDATE index_trans SET ticker =?, dateseq =?, open_px =?, 
+    close_px =?, high_px = ?, low_px = ?, volume =?  WHERE id = ?`,
+    [ticker, dateseq, open_px, close_px, high_px, low_px, volume, id],
+
+    (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
+
+      if (res.affectedRows == 0) {
+        // not found Example with the id
+        result({ kind: "not_found" }, null);
+        return;
+      }
+
+      console.log("updated transaction: ", { id: id, ...transaction });
+      result(null, { id: id, ...transaction });
+    }
+  );
+};
+
+exports.remove = (id, result) => {
+  sqlConnection.query("DELETE FROM index_trans WHERE id = ?", id, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(null, err);
+      return;
+    }
+
+    if (res.affectedRows == 0) {
+      // not found Example with the id
+      result({ kind: "not_found" }, null);
+      return;
+    }
+
+    console.log("deleted transaction with id: ", id);
+    result(null, res);
+  });
+};
+

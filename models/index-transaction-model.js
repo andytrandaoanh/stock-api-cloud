@@ -360,11 +360,12 @@ exports.getLimitTransactions = (query, callback) =>{
 
 exports.updateById = (id, transaction, result) => {
   //console.log('req.body', transaction);
-  const {ticker, dateseq, open_px, close_px, high_px, low_px, volume} = transaction;
+  //copy external to internal variants
+  const {ticker, dateseq, open, close, high, low, volume} = transaction;
   sqlConnection.query(
     `UPDATE index_trans SET ticker =?, dateseq =?, open_px =?, 
     close_px =?, high_px = ?, low_px = ?, volume =?  WHERE id = ?`,
-    [ticker, dateseq, open_px, close_px, high_px, low_px, volume, id],
+    [ticker, dateseq, open, close, high, low, volume, id],
 
     (err, res) => {
       if (err) {

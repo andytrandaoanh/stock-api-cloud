@@ -24,7 +24,8 @@ exports.getTopMovers = (req, res) => {
         else {
         //first, create an array of all tickers
 
-        const threshHold = 2000000;
+        const volumeThreshold = 2000000;
+        const priceThreshold = 3.00;
         let currentTicker = '';
         let tickerTrans = [];
         let resultTrans = [];
@@ -76,7 +77,7 @@ exports.getTopMovers = (req, res) => {
         tickerTrans.forEach(item=>{
             if (item.volumeCount === 5) {
                 averageVol =  Math.floor(item.totalVolume/item.volumeCount);
-                if(averageVol > threshHold) {
+                if(averageVol > volumeThreshold && item.currentClose > priceThreshold) {
 
                     var closeChange = (item.currentClose - item.lastClose)/item.lastClose;
                     var volumeChange = (item.currentVolume - item.lastVolume)/item.lastVolume;
@@ -96,7 +97,7 @@ exports.getTopMovers = (req, res) => {
 
         })
 
-         console.log("Identified ", resultTrans.length, " stocks whose volume average matches ", threshHold)
+         console.log("Identified ", resultTrans.length, " stocks whose volume average matches ", volumeThreshold)
          res.status(200).send(resultTrans);
         }
     })

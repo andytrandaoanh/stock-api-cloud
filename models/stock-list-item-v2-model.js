@@ -39,7 +39,7 @@ StockListItem.findById = (listId, result) => {
 };
 
 StockListItem.getAll = result => {
-  strSQL = `select * from stock_list_items order by item_id desc limit 100;`;
+  strSQL = `select * from stock_list_items order by ticker;`;
   
   sql.query(strSQL, (err, res) => {
     if (err) {
@@ -55,7 +55,7 @@ StockListItem.getAll = result => {
 
 
 StockListItem.getByListId = (listId, result) => {
-  strSQL = `select * from stock_item_view where list_id = ${listId};`;
+  strSQL = `select * from stock_item_view where list_id = ${listId} order by ticker;`;
   
   sql.query(strSQL, (err, res) => {
     if (err) {

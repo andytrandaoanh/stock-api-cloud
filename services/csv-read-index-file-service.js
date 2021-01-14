@@ -21,7 +21,7 @@ const processRow = (row) => {
 
 const readCSV = (fileName, callback) => {
 
-    const filePath  = path.resolve(__dirname, '../public/indexuploads/', fileName);
+    const filePath  = path.resolve(__dirname, '../public/uploads/', fileName);
     //console.log('reading file', filePath);
     const dataList = [];
     fs.createReadStream(filePath)

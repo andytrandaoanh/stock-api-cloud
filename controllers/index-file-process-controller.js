@@ -40,8 +40,8 @@ exports.run = (req, res) => {
                 else {
                   //Rem either of the following for first time process (first line)
                   //or subsequent processsing (diffInsertWithCheck)
-                  Transaction.bulkInsertWithNoCheck(data.file_id, dataList, (error, data) =>{
-                  //Transaction.diffInsertWithCheck(data.file_id, dataList, (error) =>{
+                  //Transaction.bulkInsertWithNoCheck(data.file_id, dataList, (error, data) =>{
+                  Transaction.diffInsertWithCheck(data.file_id, dataList, (error) =>{
                     if (error) {
                       res.status(500).send({
                         message: "Error while inserting data"

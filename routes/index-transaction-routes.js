@@ -3,8 +3,14 @@ const router = express.Router();
 const transactions = require("../controllers/index-transaction-controller.js");
 const authService = require("../services/uuid-auth-service.js");
 
+
+
 //search by query parameters
 router.get("/indexes/search", authService, transactions.searchByQuery);
+
+//get disctint tickers
+router.get("/indexes/tickerlist", authService,  transactions.getTickerList);
+
 
 router.get("/indexes/value", authService,  transactions.getValueList);
 

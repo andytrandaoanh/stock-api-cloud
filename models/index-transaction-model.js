@@ -307,7 +307,7 @@ exports.createTransaction = (Tran, result) => {
 
 
 exports.getTickerList = (callback) =>{
-  sqlConnection.query(`select distinct ticker from index_trans order by 1`, (error, result) => {
+  sqlConnection.query(`select distinct ticker from index_trans`, (error, result) => {
       if (error) {          
         callback(error, null);
         return;

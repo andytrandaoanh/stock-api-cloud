@@ -5,7 +5,7 @@ const multer = require("multer");
 
 var storage = multer.diskStorage({
   destination: (req, file, callback) => {
-    callback(null, './public/indexuploads');
+    callback(null, './public/uploads');
   },
   filename: (req, file, callback) => {
     const match = ["application/vnd.ms-excel", "text/csv"];

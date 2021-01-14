@@ -23,69 +23,87 @@ exports.getValueList = (req, res) => {
   
           console.log('date list:', dateList);
           const listId = req.params.listId;
-  
-          let stockList = ['VNINDEX', 'HNX-INDEX', 'UPCOM-INDEX', 'VN30INDEX'];
-
-          console.log('list items',stockList);  
-  
-          transactions.getTransactions(stockList, dateList, (error, data)=>{
-              if (error) {
-              console.log(stockError);
+          
+          
+          transactions.getTickerList((error, data)=>{
+            if (error) {
+              console.log(error);
               res.status(500).send({
                   message: "Error retrieving transactions"
               });
-              }
-              else {
-              let columns =    [
-                  {
-                  Header: 'Symbol',
-                  accessor: 'ticker'
-                  }
-              ] 
-          
-              dateList.forEach(dateItem=>{
-              let newString = String(dateItem);
-              let yearPart = newString.substring(2,4); 
-              let monthPart = newString.substring(4,6); 
-              let dayPart = newString.substring(6); 
-              //console.log(dayPart, monthPart, yearPart)
-  
-              let newColumn = {
-                  Header: `${dayPart}/${monthPart}/${yearPart}`,
-                  accessor: `value_${dateItem}`
-              }
-              columns.push(newColumn);
-              })
-  
-      
-              stockData = [];
-              stockList.forEach(symbol=>{
-              stockData.push({
-                  ticker: symbol
-              })
-              })
-          
-              //console.log(stockData[0].ticker);
-              
-              data.forEach(item=>{
-              //console.log(item);
-              for (i=0; i<stockData.length; i++) {
-                  //console.log(stockData[i]);
-                  if (stockData[i].ticker === item.ticker){
-                  stockData[i][`value_${item.dateseq}`] = item.close_px;
-                  //console.log('click')
-  
-                  }
-              }
-              })
-              
-              sendData = {
-                  columns: columns,
-                  data: stockData
-              };
-              res.status(200).send(sendData);  
-              }
-          });
+            }
+
+            //let stockList = ['VNINDEX', 'HNX-INDEX', 'UPCOM-INDEX', 'VN30INDEX'];
+
+            //console.log('list items',stockList);  
+    
+            let stockList = data;
+
+            transactions.getTransactions(stockList, dateList, (error, data)=>{
+                if (error) {
+                console.log(stockError);
+                res.status(500).send({
+                    message: "Error retrieving transactions"
+                });
+                }
+                else {
+                let columns =    [
+                    {
+                    Header: 'Symbol',
+                    accessor: 'ticker'
+                    }
+                ] 
+            
+                dateList.forEach(dateItem=>{
+                let newString = String(dateItem);
+                let yearPart = newString.substring(2,4); 
+                let monthPart = newString.substring(4,6); 
+                let dayPart = newString.substring(6); 
+                //console.log(dayPart, monthPart, yearPart)
+    
+                let newColumn = {
+                    Header: `${dayPart}/${monthPart}/${yearPart}`,
+                    accessor: `value_${dateItem}`
+                }
+                columns.push(newColumn);
+                })
+    
+        
+                stockData = [];
+                stockList.forEach(symbol=>{
+                stockData.push({
+                    ticker: symbol
+                })
+                })
+            
+                //console.log(stockData[0].ticker);
+                
+                data.forEach(item=>{
+                //console.log(item);
+                for (i=0; i<stockData.length; i++) {
+                    //console.log(stockData[i]);
+                    if (stockData[i].ticker === item.ticker){
+                    stockData[i][`value_${item.dateseq}`] = item.close_px;
+                    //console.log('click')
+    
+                    }
+                }
+                })
+                
+                sendData = {
+                    columns: columns,
+                    data: stockData
+                };
+                res.status(200).send(sendData);  
+                }
+            });
+
+
+          })
+
+            
+
+
   
           }
       
@@ -113,71 +131,84 @@ exports.getVolumeList = (req, res) => {
         });
         
         const dateList = dates.reverse();
-  
         
-        let stockList = ['VNINDEX', 'HNX-INDEX', 'UPCOM-INDEX','VN30INDEX'];
-
-        transactions.getTransactions(stockList, dateList, (error, data)=>{
-            if (error) {
-            console.log(stockError);
+        transactions.getTickerList((error, data)=>{
+          if (error) {
+            console.log(error);
             res.status(500).send({
                 message: "Error retrieving transactions"
             });
-            }
-            else {
-            let columns =    [
-                {
-                Header: 'Symbol',
-                accessor: 'ticker'
-                }
-            ] 
-        
-            dateList.forEach(dateItem=>{
-            let newString = String(dateItem);
-            let yearPart = newString.substring(2,4); 
-            let monthPart = newString.substring(4,6); 
-            let dayPart = newString.substring(6); 
-            //console.log(dayPart, monthPart, yearPart)
+          }
 
-            let newColumn = {
-                Header: `${dayPart}/${monthPart}/${yearPart}`,
-                accessor: `volume_${dateItem}`
-            }
-            columns.push(newColumn);
-            })
+          //console.log('ticker list data:', data);
 
+          let stockList = data;
+          
+          //let stockList = ['VNINDEX', 'HNX-INDEX', 'UPCOM-INDEX','VN30INDEX'];
 
-            stockData = [];
-            stockList.forEach(symbol=>{
-            stockData.push({
-                ticker: symbol
-            })
-            })
-        
-            //console.log(stockData[0].ticker);
-            
-            data.forEach(item=>{
-            //console.log(item);
-            for (i=0; i<stockData.length; i++) {
-                //console.log(stockData[i]);
-                if (stockData[i].ticker === item.ticker){
-                stockData[i][`volume_${item.dateseq}`] = item.volume;
-                //console.log('click')
+          transactions.getTransactions(stockList, dateList, (error, data)=>{
+              if (error) {
+              console.log(stockError);
+              res.status(500).send({
+                  message: "Error retrieving transactions"
+              });
+              }
+              else {
+              let columns =    [
+                  {
+                  Header: 'Symbol',
+                  accessor: 'ticker'
+                  }
+              ] 
+          
+              dateList.forEach(dateItem=>{
+              let newString = String(dateItem);
+              let yearPart = newString.substring(2,4); 
+              let monthPart = newString.substring(4,6); 
+              let dayPart = newString.substring(6); 
+              //console.log(dayPart, monthPart, yearPart)
+  
+              let newColumn = {
+                  Header: `${dayPart}/${monthPart}/${yearPart}`,
+                  accessor: `volume_${dateItem}`
+              }
+              columns.push(newColumn);
+              })
+  
+  
+              stockData = [];
+              stockList.forEach(symbol=>{
+              stockData.push({
+                  ticker: symbol
+              })
+              })
+          
+              //console.log(stockData[0].ticker);
+              
+              data.forEach(item=>{
+              //console.log(item);
+              for (i=0; i<stockData.length; i++) {
+                  //console.log(stockData[i]);
+                  if (stockData[i].ticker === item.ticker){
+                  stockData[i][`volume_${item.dateseq}`] = item.volume;
+                  //console.log('click')
+  
+                  }
+              }
+              })
+              
+              sendData = {
+                  columns: columns,
+                  data: stockData
+              };
+              res.status(200).send(sendData);  
+              }
+          });
 
-                }
-            }
-            })
-            
-            sendData = {
-                columns: columns,
-                data: stockData
-            };
-            res.status(200).send(sendData);  
-            }
-        });
+        })
+          
 
-
-        }
+      }
 
     });
   
@@ -334,3 +365,24 @@ exports.deleteTransaction = (req, res) => {
     } else res.send({ message: `Index transaction was deleted successfully!` });
   });
 };
+
+
+
+ // Search for index transactions by ticker and midate
+exports.getTickerList = (req, res) => {  
+  
+  transactions.getTickerList((err, data) => {
+  if (err) { 
+
+      res.status(500).send({
+        message: "Error retrieving transaction params",
+      });
+
+  }
+
+  else res.send(data);
+
+  });
+  
+};
+

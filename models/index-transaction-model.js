@@ -145,20 +145,23 @@ exports.diffInsertWithCheck = (dataFileId, dataList, callback) => {
   console.log('data file id:', dataFileId);  
   console.log('total records:', dataList.length);  
   let bulkInsertOK = true;
+  let rowTotal = 0;
 
 
 
     let strGetMax = `select max_dateseq from max_index_trans where DATE(created_at) = DATE(CURRENT_TIMESTAMP)`;
     sqlConnection.query(strGetMax, (error, result) => {
       if (error) {
-        console.log('error getting max date', error.message);
-        return;
+        console.log('error getting max date', error);
+        callback(error, null);
       }
       
       const maxDatasequence = parseInt(result[0].max_dateseq);
       console.log('max dateseq data:', maxDatasequence);
       let count = 0;
       let insertData = [];
+
+
       dataList.forEach((item, index) => {
         if (item.dateseq > maxDatasequence) {
           //console.log(item);
@@ -177,6 +180,7 @@ exports.diffInsertWithCheck = (dataFileId, dataList, callback) => {
       });
 
       console.log('Total items to add incrementally', count);
+      rowTotal = count;
       //console.log(insertData);
       let strSQL = `INSERT INTO index_trans 
       (ticker, dateseq, open_px, high_px, low_px, close_px, volume )  VALUES ?  `;
@@ -186,29 +190,44 @@ exports.diffInsertWithCheck = (dataFileId, dataList, callback) => {
         if (err) {
           //console.log('error when inserting', insertData);
           bulkInsertOK = false;
-          callback(err);
-          return console.error(err.message);
+          console.log('Error encountered', err);
+          callback(err, null);
         }   
+
+        console.log('Bulk insert result', result);
   
+        if (bulkInsertOK) {
+          sqlConnection.query("UPDATE index_files SET status = 1 WHERE file_id = ?",  [dataFileId],  (err, result) => {
+      
+            if (err) {    
+              console.log('Error setting datafile status', err);
+              callback(err, null);
+              
+              }
+              else {
+                console.log('Bulk inserting completed successfully!');
+                const returnData = {
+                  rowNumber: rowTotal,
+                  stepNumber: 1,
+                  fileId: dataFileId
+       
+                }
+                
+                console.log ('returnData', returnData);
+                callback(null, returnData);
+
+                
+              } 
+              
+            }
+            
+          );      
+        }
+
+
       });
       
-      if (bulkInsertOK) {
-        sqlConnection.query("UPDATE index_files SET status = 1 WHERE file_id = ?",  [dataFileId],  (err, result) => {
-    
-          if (err) {    
-            console.log('Error setting status of datafile to 1');
-            callback(err);
-            return;
-            }
-            else {
-              console.log('Bulk inserting completed successfully!');
-              return;
-            } 
-            
-          }
-          
-        );      
-      }
+
 
     });      
     

@@ -17,6 +17,7 @@ const dashboardRoute = require('./routes/dashboard-routes');
 const stockNoteRoute = require('./routes/stock-note-routes');
 const stockDetailRoute = require('./routes/stock-detail-routes');
 const sysConfigRoute = require('./routes/sysconfig-routes');
+const plungeRoute = require('./routes/plunge-routes');
 
 
 const app = express();
@@ -48,7 +49,7 @@ app.use('/api', webScraperRoute);
 app.use('/api', dashboardRoute);
 app.use('/api', stockNoteRoute);
 app.use('/api', stockDetailRoute);
-
+app.use('/api', plungeRoute);
 
 
 //console.log("Dotenv loaded port:", process.env.PORT);

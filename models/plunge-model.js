@@ -3,6 +3,8 @@ const sql = require("./db.js");
 // constructor
 const Plunge = function(plunge) {  
   this.dateseq = plunge.dateseq;
+  this.loss = plunge.loss;
+  this.duration = plunge.duration;
 
 };
 
@@ -53,8 +55,8 @@ Plunge.getAll = result => {
 
 Plunge.updateById = (id, plunge, result) => {
   sql.query(
-    "UPDATE plunges SET dateseq = ? WHERE id = ?",
-    [plunge.dateseq,  id],
+    "UPDATE plunges SET dateseq = ?, loss=?, duration=? WHERE id = ?",
+    [plunge.dateseq, plunge.loss, plunge.duration,  id],
     (err, res) => {
       if (err) {
         console.log("error: ", err);
@@ -129,7 +131,6 @@ Plunge.searchByQueryParams = (searchParams, result) => {
 
       if (res.length) {
         console.log("found max date: ", res[0]);
-
         let newString = String(res[0]['maxdate']);
         let yearPart = newString.substring(0,4); 
         let monthPart = parseInt(newString.substring(4,6)) - 1 ; 

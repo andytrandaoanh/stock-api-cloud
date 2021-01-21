@@ -41,7 +41,7 @@ Plunge.findById = (id, result) => {
 };
 
 Plunge.getAll = result => {
-  sql.query("SELECT * FROM plunges", (err, res) => {
+  sql.query("SELECT * FROM plunges ORDER BY dateseq DESC", (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(null, err);

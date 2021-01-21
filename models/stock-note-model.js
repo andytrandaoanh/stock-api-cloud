@@ -39,7 +39,7 @@ StockNote.findById = (stockNoteId, result) => {
 };
 
 StockNote.getAll = result => {
-  sql.query("SELECT * FROM stock_notes", (err, res) => {
+  sql.query("SELECT * FROM stock_notes order by id desc;", (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(null, err);
@@ -114,7 +114,7 @@ StockNote.searchByQueryParams = (searchParams, result) => {
   let strSQL = '';
 
 
-  if ('tickerid' in searchParams)  strSQL = `select * from stock_notes where ticker_id = ${searchParams.tickerid} order by id` 
+  if ('tickerid' in searchParams)  strSQL = `select * from stock_notes where ticker_id = ${searchParams.tickerid} order by id desc` 
 
     
   if (strSQL) {

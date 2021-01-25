@@ -13,7 +13,9 @@ exports.create = (req, res) => {
   const newPlunge = new Plunge({
     dateseq: req.body.dateseq,
     loss: req.body.loss ? req.body.loss : 0.0,
+    last: req.body.last ? req.body.last : 0.0,
     duration: req.body.duration ? req.body.duration : 0,
+
   });
 
   // Save Plunge in the database

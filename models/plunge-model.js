@@ -4,6 +4,7 @@ const sql = require("./db.js");
 const Plunge = function(plunge) {  
   this.dateseq = plunge.dateseq;
   this.loss = plunge.loss;
+  this.last = plunge.last;
   this.duration = plunge.duration;
 
 };
@@ -55,8 +56,8 @@ Plunge.getAll = result => {
 
 Plunge.updateById = (id, plunge, result) => {
   sql.query(
-    "UPDATE plunges SET dateseq = ?, loss=?, duration=? WHERE id = ?",
-    [plunge.dateseq, plunge.loss, plunge.duration,  id],
+    "UPDATE plunges SET dateseq = ?, loss=?, last=?, duration=? WHERE id = ?",
+    [plunge.dateseq, plunge.loss, plunge.last, plunge.duration,  id],
     (err, res) => {
       if (err) {
         console.log("error: ", err);

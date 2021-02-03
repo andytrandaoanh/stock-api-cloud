@@ -351,3 +351,41 @@ exports.getTopVolumeAverageTransactions = (callback) =>{
 })  
 
 }
+
+
+
+exports.getAll = callback => {
+  sqlConnection.query("select * from transactions order by id desc limit 10;", (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      callback(null, err);
+      return;
+    }
+
+    //console.log("stocks: ", res);
+    callback(null, res);
+  });
+};
+
+exports.updateById = (id, transaction, callback) => {
+  sqlConnection.query(
+    "UPDATE transactions SET ticker = ?, dateseq = ?, open_px = ?,  close_px = ?, high_px = ?, low_px = ?, volume = ?  WHERE id = ?",
+    [transaction.ticker, transaction.dateseq, transaction.open_px, transaction.close_px, transaction.high_px, transaction.low_px , transaction.volume , id],
+    (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        callback(null, err);
+        return;
+      }
+
+      if (res.affectedRows == 0) {
+        // not found Stock with the id
+        callback({ kind: "not_found" }, null);
+        return;
+      }
+
+      console.log("updated stock: ", { id: id, ...transaction });
+      callback(null, { id: id, ...transaction });
+    }
+  );
+};

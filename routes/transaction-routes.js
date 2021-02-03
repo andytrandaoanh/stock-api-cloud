@@ -12,4 +12,8 @@ router.get("/transactions/volumelist/:listId", authService, transactions.getVolu
 
 router.post("/transactions", authService, transactions.createNewTransaction);
 
+router.get("/transactions", authService, transactions.findAll);
+
+router.put("/transactions/:id", authService, transactions.update);
+
 module.exports = router;

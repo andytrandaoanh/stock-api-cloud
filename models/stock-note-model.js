@@ -39,14 +39,24 @@ StockNote.findById = (stockNoteId, result) => {
 };
 
 StockNote.getAll = result => {
-  sql.query("SELECT * FROM stock_notes order by id desc;", (err, res) => {
+
+  let strSQL = `select a.id as note_id,  
+    a.note, a.created_at as note_date, a.ticker_id, 
+    b.ticker, b.exchange, b.company 
+    from stock_notes a 
+    inner join  stocks b 
+    on a.ticker_id = b.id
+    order by note_id desc;
+    `;
+
+  sql.query(strSQL, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(null, err);
       return;
     }
 
-    console.log("stock_notes: ", res);
+    //console.log("stock_notes: ", res);
     result(null, res);
   });
 };

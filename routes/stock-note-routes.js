@@ -5,7 +5,6 @@ const authService = require("../services/uuid-auth-service.js");
 
 router.post("/stocknotes", authService, stockNote.create);
 
-
 //search by query parameters
 router.get("/stocknotes/search", authService, stockNote.searchByQuery);
 
